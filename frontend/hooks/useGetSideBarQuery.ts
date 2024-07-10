@@ -8,7 +8,7 @@ const useGetSideBarQuery = () => {
 
   const fetchTableData = async (): Promise<SidebarData> => {
     const url = qs.stringifyUrl({
-      url: "http://127.0.0.1:8000/sidebar/renderList",
+      url: `${process.env.NEXT_PUBLIC_API_URL}/api/sidebar/renderList`,
     });
 
     try {

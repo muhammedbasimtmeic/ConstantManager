@@ -15,13 +15,13 @@ const SideBarItem = ({ title, id, description, icon, tables }: SidebarItem) => {
   const subMenuActive = tables.some((table) => table.id == params?.tableId);
 
   return (
-    <Accordion type="single" collapsible className="w-full p-0" onValueChange={() => setIsOpen((prev) => !prev)}>
-      <AccordionItem value={id} className="rounded-r-lg border-none">
+    <Accordion type="single" collapsible className="w-full p-0 mb-1" onValueChange={() => setIsOpen((prev) => !prev)}>
+      <AccordionItem value={id} className={cn("rounded-r-lg ")}>
         <AccordionTrigger
           className={cn(
-            "p-3 group relative  hover:bg-gradient-to-r from-orange-500 to-amber-400 hover:no-underline",
-            subMenuActive && "bg-zinc-200 shadow-sm",
-            isOpen ? "rounded-tr-lg bg-zinc-200 shadow-sm" : "rounded-r-lg"
+            "p-3 group relative hover:bg-gradient-to-r from-orange-500 to-amber-400 hover:no-underline transition-all",
+            subMenuActive && "bg-zinc-300 ",
+            isOpen ? "rounded-tr-lg bg-zinc-300" : "rounded-r-lg"
           )}
         >
           <div className={cn("absolute left-0 bg-orange-700 transition-all w-[4px] group-hover:h-full", (isOpen || subMenuActive) && "h-full")} />

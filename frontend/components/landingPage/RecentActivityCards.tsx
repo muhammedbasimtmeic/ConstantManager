@@ -54,7 +54,7 @@ const RecentActivitiesCards = () => {
         <Activity className="w-6 h-6 mr-2" />
         <p className="font-semibold"> Recent Activities</p>
       </div>
-      <div className="space-y-2 h-[450px] overflow-auto mt-2">
+      <div className="space-y-2 h-[400px] overflow-auto mt-2">
         {activities.map((activity, index) => (
           <Card
             className="w-full items-center rounded-sm opacity-80 bg-gradient-to-tr from-zinc-200 to-zinc-300 border transition-all hover:cursor-pointer hover:opacity-100"

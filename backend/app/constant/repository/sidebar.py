@@ -7,8 +7,13 @@ from fastapi import HTTPException, status
 
 # get list of side bar with grouping for rendering
 def get_sidebar_render_data(db: Session):
-    sidebar_data = db.query(models.SidebarGroups).all()
+    sidebar_data = db.query(models.SidebarGroups).filter(models.SidebarGroups.id != 99).all()
     return sidebar_data
+
+# get list of side bar item not grouped
+def get_sidebar_ungrouped(db: Session):
+    ungrouped_items = db.query(models.SidebarDefnition).filter(models.SidebarDefnition.groupId == 99).all()
+    return ungrouped_items
 
 
 # get side bar items in raw form 
@@ -57,11 +62,14 @@ def create_sidebar_table_data(request: schemas.SidebarTableDataIn, db: Session):
     
     except exc.IntegrityError as e:
         if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail=f"Foriegn Key Viaolation error - {e.orig.diag.message_detail}")
         elif isinstance(e.orig, psycopg2.errors.UniqueViolation):
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail=f"Unique Key Viaolation error - {e.orig.diag.message_detail}")
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            detail=f"Server Error")    
         
 
 def delete_sidebar_item(id: int, db: Session):
@@ -76,14 +84,25 @@ def delete_sidebar_item(id: int, db: Session):
     return 'done'
 
 
-def updatee_sidebar_item(id: int, request: schemas.SidebarTableDataIn, db: Session):
-    item = db.query(models.SidebarDefnition).filter(models.SidebarDefnition.id == id)
+def updatee_sidebar_item(id: int,  db: Session, request: schemas.SidebarTableDataIn = None, unGroup:bool = False):
+    item = db.query(models.SidebarDefnition).filter(models.SidebarDefnition.id == id).first()
 
-    if not item.first():
+    if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Item with id {id} not found")
-
-    item.update(request)
+    if unGroup:
+        item.groupId = 99
+    else:
+        item.name = request.name
+        item.dbName = request.dbName
+        item.tableName = request.tableName
+        item.schemaName = request.schemaName
+        item.description = request.description
+        item.icon = request.icon
+        item.columnsList = request.columnsList
+        item.editableColumns = request.editableColumns
+        item.editableColumns = request.editableColumns
+        item.keyColumns = request.keyColumns
     db.commit()
     return 'updated'
 
@@ -101,17 +120,26 @@ def create_sidebar_group(request: schemas.SidebarGroup, db: Session):
 
 def update_sidebar_group(id:int, request: schemas.SidebarGroup, db: Session):
 
+    if id == 99:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Sidebar group with id {id} cannot be edited")
+
     group = db.query(models.SidebarGroups).filter(models.SidebarGroups.id == id).first()
 
     if not group:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Sidebar group with id {id} not found")
 
-    group.update(request)
+    group.title = request.title
+    group.description = request.description
+    group.icon = request.icon
     db.commit()
     return "Sidebar group updated"
 
 def delete_sidebar_group(id: int, db: Session):
+    if id == 99:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Sidebar group with id {id} cannot be edited")
     group_to_delete = db.query(models.SidebarGroups).filter(models.SidebarGroups.id == id)
 
     if not group_to_delete.first():

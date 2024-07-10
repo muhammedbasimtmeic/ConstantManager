@@ -1,4 +1,5 @@
 "use client";
+
 import { createColumnDef } from "@/components/datatable/Columns";
 import DataTable from "@/components/datatable/DataTable";
 import TableSkeleton from "@/components/datatable/TableSkelaton";
@@ -36,7 +37,7 @@ export default function ConstantTable() {
         tableName={tableInfo?.tableName}
         schemaName={tableInfo?.schemaName}
         dbName={tableInfo?.dbName}
-        tableComment={tableInfo?.desc}
+        tableComment={tableInfo?.description}
       />
       {(tableMetaLoading || tableDataLoading) && <TableSkeleton rows={8} cols={7} />}
       {tableMetaLoaded && tableDataLoaded && <DataTable data={tableData} columns={columns} />}

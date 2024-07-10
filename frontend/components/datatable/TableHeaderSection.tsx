@@ -53,7 +53,7 @@ const TableHeaderSection = ({ tableName, schemaName, dbName, tableComment }: Tab
       </h1>
       <div className="flex gap-2 relative">
         <Input
-          className="border-none bg-zinc-200/70 text-zinc-500  focus-visible:ring-0 focus-visible:ring-offset-0 w-96 px-8"
+          className="border border-zinc-300 bg-zinc-200/70 text-zinc-500  focus-visible:ring-0 focus-visible:ring-offset-0 w-96 px-8"
           value={comment}
           placeholder="Table Comment"
           onChange={(e) => {

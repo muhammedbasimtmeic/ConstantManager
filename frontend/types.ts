@@ -28,3 +28,28 @@ interface SidebarItem {
 }
 
 type SidebarData = SidebarItem[];
+
+interface UserProfile {
+  name: string;
+  email: string;
+  role: "ADMIN" | "MODERATOR" | "USER";
+  image: string | null;
+}
+interface SidebarGroupEdit {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+interface SidebarTableEdit {
+  name: string;
+  tableName: string;
+  schemaName: string;
+  dbName: string;
+  description: string;
+  icon: string;
+  groupId: number | 99;
+  columnsList: string[] | [];
+  keyColumns: string[] | [];
+  editableColumns: string[] | [];
+}

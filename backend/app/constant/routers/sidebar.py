@@ -21,14 +21,24 @@ def create_sidebar_group(req:schemas.SidebarGroup, db:Session = Depends(get_db))
    return sidebar.create_sidebar_group(req, db)
 
 
-@router.put('/group')
-def update_sidebar_group(req:schemas.SidebarGroup, db:Session = Depends(get_db)):
-   return sidebar.create_sidebar_group(req, db)
+@router.put("/group/{id}")
+def update_sidebar_group(id:int, req:schemas.SidebarGroup, db:Session = Depends(get_db)):
+   return sidebar.update_sidebar_group(id, req, db)
+
+
+@router.delete("/group/{id}")
+def delete_sidebar_group(id:int, db:Session = Depends(get_db)):
+   return sidebar.delete_sidebar_group(id, db)
 
 
 @router.get('/items', response_model = List[schemas.SidebarTableDataOut])
 def get_sidebar_items( search:str = None, skip:int = 0, limit:int = 100 ,db:Session = Depends(get_db)):
    return sidebar.get_sidebar_items(db, search,limit,skip)
+
+
+@router.get('/items/ungrouped', response_model = List[schemas.SidebarTableDataOut])
+def get_sidebar_items(db:Session = Depends(get_db)):
+   return sidebar.get_sidebar_ungrouped(db)
 
 
 @router.get("/item/{id}", response_model = schemas.SidebarTableDataOut)
@@ -37,13 +47,18 @@ def get_sidebar_item( id: int, db:Session = Depends(get_db)):
 
 
 @router.post("/item", description="Create sidebar items")
-def get_sidebar_item( req:schemas.SidebarTableDataIn, db:Session = Depends(get_db)):
+def create_sidebar_item( req:schemas.SidebarTableDataIn, db:Session = Depends(get_db)):
    return sidebar.create_sidebar_table_data(req, db)
 
 
 @router.put("/item/{id}", description="Edit sidebar items")
-def update_sidebar_item( req:schemas.SidebarTableDataIn, db:Session = Depends(get_db)):
-   return sidebar.updatee_sidebar_item(req, db)
+def update_sidebar_item(id:int, req:schemas.SidebarTableDataIn, db:Session = Depends(get_db)):
+   return sidebar.updatee_sidebar_item(id, req, db)
+
+
+@router.put("/item/ungroup/{id}", description="Ungroup sidebar items")
+def ungroup_sidebar_item(id:int,  db:Session = Depends(get_db)):
+   return sidebar.updatee_sidebar_item(id, db, unGroup=True)
 
 
 @router.delete("/item/{id}", description="Delete sidebar items")

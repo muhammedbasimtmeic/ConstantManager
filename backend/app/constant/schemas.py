@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class Role(StrEnum):
     ADMIN = "ADMIN"
     MODERATOR = "MODERATOR"
-    GUEST = "GUEST"
+    USER = "GUEST"
 
 class User(BaseModel):
     id:int
@@ -29,10 +29,22 @@ class RegisterRequest(BaseModel):
     email: str
     username :str
     password: str
+    role:str = "USER"
+    image:str = ""
 
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class UserWithToken(BaseModel):
+    id:int
+    name:str
+    email:str
+    role:Role
+    image:str | None = None
+    isActive:bool = True
+    accessToken: str
+    tokenType: str = 'barear'
 
 class TokenData(BaseModel):
     email: Optional[str] = None
@@ -66,14 +78,16 @@ class SidebarGroup(BaseModel):
 
 # side bar group item creation schema
 class SidebarTableDataIn(BaseModel):
-    name:str | None = None
-    tableName:str
-    schemaName:str
-    dbName:str
-    description:str | None = None
-    icon:str | None = None
-    groupId:int | None = None
-    columnsList:list[str]
-    keyColumns:list[str]
-    editableColumns:list[str]
-
+    name: Optional[str] = None
+    tableName: Optional[str] = None
+    schemaName: Optional[str] = None
+    dbName: Optional[str] = None
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    groupId: Optional[int] = 99
+    columnsList: List[str] = []
+    keyColumns: List[str] = []
+    editableColumns: List[str] = []
+    
+class Message(BaseModel):
+    message: str

@@ -70,22 +70,22 @@
   * {
     @apply border-border;
   }
-  body {
+  /* body {
     @apply bg-background text-foreground max-h-screen;
-  }
+  } */
 }
 
 html,
 body,
 :root {
-  min-height: 100%;
-  height: auto;
+  min-height: 100vh;
+  margin: 0;
 }
 
 :root {
-  --pageBackgroundGradientColorStop1: #f5f5f5;
-  --pageBackgroundGradientColorStop2: #edf0f5;
-  --pageBackgroundGradientColorStop3: #f2f0f4;
+  --pageBackgroundGradientColorStop1: #ececec;
+  --pageBackgroundGradientColorStop2: #e6ecf7;
+  --pageBackgroundGradientColorStop3: #f6eeff;
 }
 
 body {
@@ -114,4 +114,9 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: #eef1f5; /* Adjust the background color as needed */
+}
+
+.main_section_height {
+  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
 }

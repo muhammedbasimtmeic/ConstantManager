@@ -29,25 +29,13 @@ const SearchBar = () => {
     setSearchInput(event.target.value);
   };
 
-  // useEffect(() => {
-  //   const keyDown = (e: KeyboardEvent) => {
-  //     console.log(e.key);
-  //     if (e.key === "Escape") {
-  //       setIsLoading(false);
-  //       setSearchInput("");
-  //     }
-  //   };
-  //   document.addEventListener("keydown", keyDown);
-  //   return () => document.removeEventListener("keydown", keyDown);
-  // }, []);
-
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (searchInput) {
         setIsLoading(true);
 
         axios
-          .get(`http://127.0.0.1:8000/sidebar/items?search=${searchInput}`)
+          .get(`${process.env.NEXT_PUBLIC_API_URL}/api/sidebar/items?search=${searchInput}`)
           .then((response) => {
             setResults(response.data);
             console.log(results);
@@ -83,9 +71,9 @@ const SearchBar = () => {
       )}
 
       {searchInput && (
-        <ul className=" absolute w-full bg-zinc-100 dark:bg-zinc-800 shadow-md mt-1 z-10 max-h-96 overflow-scroll p-2 snap-start rounded-md">
+        <ul className="absolute w-full divide-y divide-gray-200 bg-zinc-100 dark:bg-zinc-800 shadow-md mt-1 max-h-96 overflow-y-auto py-2 snap-start rounded-md [&>li]:rounded-md">
           {isLoading ? (
-            <li className="font-semibold text-sm flex text-zinc-600 justify-center items-center gap-1">
+            <li className="font-semibold text-sm flex text-zinc-600 justify-center items-center gap-1 ">
               <LoaderCircle className="w-4 h-4 animate-spin" />
               Loading...
             </li>
@@ -101,9 +89,9 @@ const SearchBar = () => {
                 </li>
               )}
               {results.map((result, index) => (
-                <li key={index} className="p-2 border-b rounded-md ">
+                <li key={index} className="">
                   <Link
-                    className="flex items-center border-gray-200 dark:border-zinc-700 hover:bg-zinc-300 hover:shadow-sm hover:cursor-pointer"
+                    className="flex items-center p-2 px-4 border-gray-200 dark:border-zinc-700 hover:bg-zinc-300 hover:shadow-sm hover:cursor-pointer"
                     href={`/table/${result.id}`}
                   >
                     <Icon name={result.icon as keyof typeof dynamicIconImports} className="w-8 h-8 text-orange-600" />

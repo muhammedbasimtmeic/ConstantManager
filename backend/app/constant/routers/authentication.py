@@ -22,17 +22,32 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
  
 
-@router.post('/login', response_model = schemas.Token)
+
+@router.post('/login', response_model=schemas.UserWithToken)
 def login(login_request: schemas.LoginRequest, db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(
         models.User.email == login_request.email).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invalid Credentials")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
     if not Hash.verify(user.password, login_request.password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Incorrect password")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password"
+        )
 
     access_token = token.create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
- 
+    response = {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "role": user.role,
+        "image": user.image,
+        "isActive": True,
+        "accessToken": access_token,
+        "tokenType": "bearer"
+    }
+    return response

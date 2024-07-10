@@ -57,7 +57,7 @@ class SidebarDefnition(Base):
     tableName = Column(String)
     schemaName = Column(String)
     dbName = Column(String)
-    groupId = Column(Integer, ForeignKey('SidebarGroups.id'), nullable=False, index=True)
+    groupId = Column(Integer, ForeignKey('SidebarGroups.id'), nullable=False, index=True, default = 99)
     description = Column(String) 
     icon = Column(String, default='boxes') 
     columnsList = Column(ARRAY(String))
@@ -78,3 +78,15 @@ class EditTableSession(Base):
 
     user = relationship('User', back_populates='editTableSessions')
     table = relationship('SidebarDefnition')
+
+class DatabasesConfig(Base):
+    __tablename__ = 'DatabaseList'
+
+    Id = Column(Integer,autoincrement=True, primary_key=True)
+    databaseName = Column(String,unique=True ,nullable=False, index=True)
+    kind = Column(Enum('POSTGRES', 'MSSQL', 'ORACLE', 'SQLLITE','MYSQL', name="dbTypeEnum"))
+    server = Column(String ,nullable=False)
+    port = Column(Integer ,nullable=False)
+    user = Column(String ,nullable=False)
+    password = Column(String ,nullable=False)
+ 

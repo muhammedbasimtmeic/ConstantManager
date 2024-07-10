@@ -4,9 +4,10 @@ import { Inter } from "next/font/google";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
-import { ModeToggle } from "@/components/ModeToggle";
 import type { Metadata } from "next";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ModalProvider } from "@/components/providers/modal-provider";
+import AuthSessionProvider from "@/components/providers/session-provider";
 
 export const metadata: Metadata = {
   title: "Constant Manager",
@@ -27,10 +28,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className)}>
         <ThemeProvider attribute="class" defaultTheme="light" storageKey="cstmgr-theme" enableSystem={false}>
-          <QueryProvider>
-            {children}
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryProvider>
+          <AuthSessionProvider>
+            <QueryProvider>
+              {children}
+              <ModalProvider />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryProvider>
+          </AuthSessionProvider>
           <Toaster />
         </ThemeProvider>
       </body>

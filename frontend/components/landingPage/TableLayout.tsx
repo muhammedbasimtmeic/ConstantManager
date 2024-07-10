@@ -35,7 +35,8 @@ const LandingPageTableLayout = () => {
           repeatDelay={1}
           className={cn("[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]", "inset-x-0 inset-y-[-20%] h-[200%] skew-y-6 ")}
         />
-        <div className="hidden md:flex flex-col justify-start gap-2">
+
+        <div className="hidden md:flex flex-col justify-start gap-3 p-4">
           <Skeleton className={cn("h-4 w-16")} />
           <Skeleton className={cn("h-4 w-16")} />
           <Skeleton className={cn("h-4 w-16")} />
@@ -46,6 +47,7 @@ const LandingPageTableLayout = () => {
           <Skeleton className={cn("h-4 w-16")} />
           <Skeleton className={cn("h-4 w-16")} />
         </div>
+
         <div className="flex flex-col">
           <div className="p-4 md:p-10">
             <DashBoardLogo />
