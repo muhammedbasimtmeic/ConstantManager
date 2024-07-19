@@ -39,7 +39,7 @@ def get_sidebar_item(id: int, db: Session):
     sidebar_item = db.query(models.SidebarDefnition).filter(models.SidebarDefnition.id == id).first()
     if not sidebar_item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Sidebar item with the id {id} is not available")
+                            detail=f"Sidebar item with the id {id} is not available") 
     return sidebar_item
 
 def create_sidebar_table_data(request: schemas.SidebarTableDataIn, db: Session):
@@ -84,7 +84,7 @@ def delete_sidebar_item(id: int, db: Session):
     return 'done'
 
 
-def updatee_sidebar_item(id: int,  db: Session, request: schemas.SidebarTableDataIn = None, unGroup:bool = False):
+def update_sidebar_item(id: int, db: Session, request: schemas.SidebarTableDataIn = None, unGroup:bool = False, group:bool = False, groupId:int = None):
     item = db.query(models.SidebarDefnition).filter(models.SidebarDefnition.id == id).first()
 
     if not item:
@@ -92,6 +92,8 @@ def updatee_sidebar_item(id: int,  db: Session, request: schemas.SidebarTableDat
                             detail=f"Item with id {id} not found")
     if unGroup:
         item.groupId = 99
+    elif group and groupId:
+        item.groupId = groupId
     else:
         item.name = request.name
         item.dbName = request.dbName

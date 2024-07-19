@@ -27,7 +27,7 @@ export const UngroupedTables = () => {
   };
 
   const {
-    isLoading,
+    isPending,
     isSuccess,
     data: unGroupedTables,
   } = useQuery({
@@ -36,8 +36,6 @@ export const UngroupedTables = () => {
     staleTime: Infinity,
     refetchInterval: false,
   });
-
-  if (isLoading) return <BoxesLoadingSkeleton count={5} />;
 
   return (
     <div className="p-1 w-full">
@@ -52,47 +50,55 @@ export const UngroupedTables = () => {
       <div className="mt-4 space-y-3">
         <h1 className="text-lg font-semibold text-zinc-600">Ungrouped Tables</h1>
 
-        {unGroupedTables?.length ? (
-          unGroupedTables?.map(({ id, name, tableName, schemaName, dbName, description, icon }) => (
-            <div
-              key={id}
-              className={cn(
-                "w-full group p-2 rounded-xl text-zinc-700 items-center border border-zinc-400 drop-shadow  bg-gradient-to-r from-zinc-100 to-zinc-200 transition-all hover:shadow-md"
-              )}
-            >
-              <div className="flex items-center gap-1">
-                <Icon name={icon as keyof typeof dynamicIconImports} className="w-8 h-8 mr-2" />
-                <div className="flex flex-col">
-                  <p className="font-semibold">{tableName}</p>
-                  <p className="text-zinc-500 max-w-96 text-wrap line-clamp-2">{description}</p>
-                </div>
-                <div className="group-hover:flex gap-3 ml-auto mr-2 hidden transition-all">
-                  <ActionTooltip label="Edit Table Settings">
-                    <Edit
-                      className="w-4 h-4 text-zinc-600"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    />
-                  </ActionTooltip>
-                  <ActionTooltip label="Delete Table from sidebar">
-                    <Trash2
-                      className="w-4 h-4 text-zinc-600"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpen("deleteSidebarTable", { deleteId: id });
-                      }}
-                    />
-                  </ActionTooltip>
+        {isPending && <BoxesLoadingSkeleton count={5} />}
+
+        {isSuccess &&
+          (unGroupedTables?.length ? (
+            unGroupedTables?.map(({ id, name, tableName, schemaName, dbName, description, icon }) => (
+              <div
+                key={id}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("application/json", JSON.stringify({ id, name, dbName, tableName, schemaName, description, icon }));
+                }}
+                className={cn(
+                  "w-full group p-2 rounded-xl text-zinc-700 items-center border border-zinc-400 drop-shadow  bg-gradient-to-r from-zinc-100 to-zinc-200 transition-all hover:shadow-md cursor-pointer"
+                )}
+              >
+                <div className="flex items-center gap-1">
+                  <Icon name={icon as keyof typeof dynamicIconImports} className="w-8 h-8 mr-2" />
+                  <div className="flex flex-col">
+                    <p className="font-semibold text-sm">{name}</p>
+                    <span className="text-xs text-indigo-700 font-medium italic">{tableName}</span>
+                    <p className="text-zinc-500 max-w-96 text-wrap text-xs line-clamp-2">{description}</p>
+                  </div>
+                  <div className="group-hover:flex gap-3 ml-auto mr-2 hidden transition-all">
+                    <ActionTooltip label="Edit Table Settings">
+                      <Edit
+                        className="w-4 h-4 text-zinc-600"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      />
+                    </ActionTooltip>
+                    <ActionTooltip label="Delete Table from sidebar">
+                      <Trash2
+                        className="w-4 h-4 text-zinc-600"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpen("deleteSidebarTable", { deleteId: id });
+                        }}
+                      />
+                    </ActionTooltip>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="border border-dashed border-zinc-400 w-full h-48 rounded-xl">
+              <p className="p-4 text-md text-zinc-600"> No ungrouped tables found</p>
             </div>
-          ))
-        ) : (
-          <div className="border border-dashed border-zinc-400 w-full h-48 rounded-xl">
-            <p className="p-4 text-md text-zinc-600"> No ungrouped tables found</p>
-          </div>
-        )}
+          ))}
       </div>
     </div>
   );

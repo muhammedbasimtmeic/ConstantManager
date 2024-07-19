@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import SideBarItem from "./SidebarItem";
 import useGetSideBarQuery from "@/hooks/useGetSideBarQuery";
 import Loading from "../Loading";
@@ -17,27 +17,40 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ArrowRight, Monitor, Moon, Settings, Sun, SunMoon, TestTube, Wrench } from "lucide-react";
+import { ArrowRight, Monitor, Moon, Settings, Sun, SunMoon, TestTube, TriangleAlert, Wrench } from "lucide-react";
 import Link from "next/link";
+import { Accordion } from "../ui/accordion";
 
 const SideBarMenu = () => {
   const { isSuccess, isPending, data } = useGetSideBarQuery();
-  const isAdmin = true;
+  const [accordinState, setAccordinState] = useState<string[]>([]);
+
+  const handleValueChange = (value: string) => {
+    setAccordinState((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((item) => item !== value); // Remove the id if it's already in the state
+      } else {
+        return [...prev, value]; // Add the id if it's not in the state
+      }
+    });
+  };
+
   return (
-    <nav className="p-3 flex flex-col h-full">
+    <nav className="p-3 flex flex-col h-full relative">
       {isPending ? (
         <Loading />
       ) : (
-        <ScrollArea className="h-[600px] pe-2">
-          {data?.map((sidebarGroup) => (
-            <SideBarItem
-              key={sidebarGroup.id}
-              id={sidebarGroup.id}
-              title={sidebarGroup.title}
-              description={sidebarGroup.description}
-              icon={sidebarGroup.icon}
-              tables={sidebarGroup.tables}
-            />
+        <ScrollArea className="h-[600px] pe-2 max-w-[270px]">
+          {data?.length == 0 && (
+            <div className="flex flex-col gap-2 items-center">
+              <TriangleAlert className="w-9 h-9 text-red-500" />
+              <p className="font-normal text-sm text-center text-wrap text-zinc-600"> Sidebar is not Configured...</p>
+            </div>
+          )}
+          {data?.map(({ id, title, icon, description, tables }) => (
+            <Accordion type="multiple" className="p-0 mb-1" value={accordinState} onValueChange={() => handleValueChange(id)}>
+              <SideBarItem key={id} id={id} title={title} description={description} icon={icon} tables={tables} accordinState={accordinState} />
+            </Accordion>
           ))}
         </ScrollArea>
       )}

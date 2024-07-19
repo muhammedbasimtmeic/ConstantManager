@@ -1,14 +1,11 @@
 "use client";
-import { useState } from "react";
 import Icon from "../Icon";
 import dynamicIconImports from "lucide-react/dynamicIconImports";
 import { cn } from "@/lib/utils";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Edit, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import ActionTooltip from "../ToolTip";
 import { useModal } from "@/hooks/useModalStore";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const SidebarTableListItemManage = ({ id, name, dbName, tableName, schemaName, description, icon }: SideBarTableData) => {
   const { onOpen } = useModal();
@@ -23,8 +20,9 @@ const SidebarTableListItemManage = ({ id, name, dbName, tableName, schemaName, d
       <div className="flex items-center gap-1">
         <Icon name={icon as keyof typeof dynamicIconImports} className="w-8 h-8 mr-2" />
         <div className="flex flex-col">
-          <p className="font-semibold">{tableName}</p>
-          <p className="text-zinc-500 max-w-96 text-wrap line-clamp-2">{description}</p>
+          <p className="font-semibold text-sm">{name}</p>
+          <span className="text-xs text-indigo-700 font-medium italic">{tableName}</span>
+          <p className="text-zinc-500 max-w-96 text-wrap text-xs line-clamp-2">{description}</p>
         </div>
         <div className="group-hover:flex gap-3 ml-auto mr-2 hidden transition-all">
           <ActionTooltip label="Edit Table Settings" side="left">

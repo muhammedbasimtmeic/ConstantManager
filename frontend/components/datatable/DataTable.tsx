@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
-import { Switch } from "@/components/ui/switch";
+import { Columns3, Key, ArrowUp, ArrowDown, Settings } from "lucide-react";
 
 import {
   ColumnDef,
@@ -20,8 +19,7 @@ import {
   RowPinningState,
 } from "@tanstack/react-table";
 
-import { Columns3, Key, ArrowUp, ArrowDown, Settings } from "lucide-react";
-
+import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -200,10 +198,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableHeader className="rounded-t-md border-none">
             {table.getHeaderGroups().map((headerGroup) => {
               return (
-                <TableRow
-                  key={headerGroup.id}
-                  className="border-none rounded-t-md bg-gradient-to-b from-stone-400 to-stone-300 hover:bg-gradient-to-b from-stone-400 to-stone-300 "
-                >
+                <TableRow key={headerGroup.id} className="border-none rounded-t-md bg-gradient-to-b from-stone-400 to-stone-300 ">
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead

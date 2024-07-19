@@ -2,16 +2,15 @@
 
 import React, { useState } from "react";
 import { ColumnDef, RowData } from "@tanstack/react-table";
+import { toast } from "sonner";
+import { Ellipsis, PinOff, Pin, X } from "lucide-react";
+import { format, parseISO } from "date-fns";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-import { Ellipsis, PinOff, Pin, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 import { Checkbox } from "../ui/checkbox";
-import dayjs from "dayjs";
 
 import TableHeading from "./TableHeading";
 import ActionTooltip from "../ToolTip";
@@ -30,7 +29,7 @@ declare module "@tanstack/react-table" {
 
 export const createColumnDef = (columnDefnition: columnDefnitionType[]): ColumnDef<any>[] => {
   // function render cell element based on the column dataType
-  const renderInput = (dataType: string, value: string | boolean, isPrimaryKey: boolean, constrains: []) => {
+  const renderInput = (dataType: string, value: string | boolean | undefined | number, isPrimaryKey: boolean, constrains: []) => {
     const [fieldValue, setFieldValue] = useState(value);
 
     if (isPrimaryKey) {
@@ -82,7 +81,7 @@ export const createColumnDef = (columnDefnition: columnDefnitionType[]): ColumnD
           //   fullWidth
           // />
           <Input
-            value={dayjs(fieldValue as string).format("YYYY-MM-DD")}
+            value={fieldValue ? format(parseISO(fieldValue as string), "yyyy-MM-dd") : undefined}
             type="date"
             className={cn(
               "text-center py-0 shadow-none border-none w-full",
@@ -95,7 +94,7 @@ export const createColumnDef = (columnDefnition: columnDefnitionType[]): ColumnD
       case "time":
         return (
           <Input
-            value={dayjs(fieldValue as string).format("HH:mm:ss")}
+            value={fieldValue ? format(parseISO(fieldValue as string), "HH:mm:ss") : undefined}
             type="time"
             className={cn(
               "text-center py-0 shadow-none border-none w-full",
@@ -116,7 +115,7 @@ export const createColumnDef = (columnDefnition: columnDefnitionType[]): ColumnD
       case "datetime":
         return (
           <Input
-            value={dayjs(fieldValue as string).format("DD-MM-YYYY HH:mm:ss")}
+            value={fieldValue ? format(parseISO(fieldValue as string), "DD-MM-YYYY HH:mm:ss") : undefined}
             type="datetime-local"
             className={cn(
               "text-center py-0 shadow-none border-none w-full",

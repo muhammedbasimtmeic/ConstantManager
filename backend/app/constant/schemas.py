@@ -91,3 +91,13 @@ class SidebarTableDataIn(BaseModel):
     
 class Message(BaseModel):
     message: str
+
+
+class TableComment(BaseModel):
+    comment: str = ""
+
+class TableCommentEdit(BaseModel):
+    tableName:str
+    schemaName:str
+    dbName:str
+    comment: str = ""

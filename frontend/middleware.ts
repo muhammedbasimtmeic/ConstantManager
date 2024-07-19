@@ -20,8 +20,8 @@ export default auth((req) => {
 
   if (isAuthAPIRoutes) return NextResponse.next();
 
-  //   if (isLoggedIn && isAuthRoute) return NextResponse.redirect(new URL(DEFAULT_REDIRECT_ON_LOGIN_ROUTE, nextUrl));
-  //   if (!isLoggedIn && isProtectedRoute) return NextResponse.redirect(new URL(LOGIN_ROUTE, nextUrl));
+  if (isLoggedIn && isAuthRoute) return NextResponse.redirect(new URL(DEFAULT_REDIRECT_ON_LOGIN_ROUTE, nextUrl));
+  if (!isLoggedIn && isProtectedRoute) return NextResponse.redirect(new URL(LOGIN_ROUTE, nextUrl));
 
   return NextResponse.next();
 });

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop Example</title>
+    <style>
+      .draggable {
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+        margin: 20px;
+        cursor: pointer;
+      }
+      .droppable {
+        width: 200px;
+        height: 200px;
+        background-color: lightgray;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="draggable" draggable="true">Drag me</div>
+    <div class="droppable">Drop here</div>
+
+    <script>
+      const draggable = document.querySelector(".draggable");
+      const droppable = document.querySelector(".droppable");
+
+      draggable.addEventListener("dragstart", (event) => {
+        // Setting different types of data
+        event.dataTransfer.setData("text/plain", "This is some text");
+        event.dataTransfer.setData("text/html", "<div>This is some HTML</div>");
+        event.dataTransfer.setData("text/uri-list", "http://example.com");
+        event.dataTransfer.setData("application/json", JSON.stringify({ key: "value" }));
+      });
+
+      droppable.addEventListener("dragover", (event) => {
+        event.preventDefault(); // Necessary to allow a drop
+      });
+
+      droppable.addEventListener("drop", (event) => {
+        event.preventDefault();
+        // Retrieving different types of data
+        const text = event.dataTransfer.getData("text/plain");
+        const html = event.dataTransfer.getData("text/html");
+        const url = event.dataTransfer.getData("text/uri-list");
+        const json = JSON.parse(event.dataTransfer.getData("application/json"));
+
+        console.log("Text:", text);
+        console.log("HTML:", html);
+        console.log("URL:", url);
+        console.log("JSON:", json);
+      });
+    </script>
+  </body>
+</html>

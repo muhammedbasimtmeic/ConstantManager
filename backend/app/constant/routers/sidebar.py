@@ -58,8 +58,11 @@ def update_sidebar_item(id:int, req:schemas.SidebarTableDataIn, db:Session = Dep
 
 @router.put("/item/ungroup/{id}", description="Ungroup sidebar items")
 def ungroup_sidebar_item(id:int,  db:Session = Depends(get_db)):
-   return sidebar.updatee_sidebar_item(id, db, unGroup=True)
+   return sidebar.update_sidebar_item(id, db, unGroup=True)
 
+@router.put("/item/group/{id}/{groupId}", description="Group sidebar items to requested group")
+def group_sidebar_item(id:int, groupId:int,  db:Session = Depends(get_db)):
+   return sidebar.update_sidebar_item(id, db, group = True, groupId = groupId)
 
 @router.delete("/item/{id}", description="Delete sidebar items")
 def delete_sidebar_item( id: int, db:Session = Depends(get_db)):

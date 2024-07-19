@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from constant import  models
 from constant.database import engine
-from constant.routers import user, authentication, sidebar, dbinfo
+from constant.routers import user, authentication, sidebar, dbinfo, tableData, table_session
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -24,3 +24,5 @@ app.include_router(authentication.router)
 app.include_router(sidebar.router)
 app.include_router(user.router)
 app.include_router(dbinfo.router)
+app.include_router(tableData.router)
+app.include_router(table_session.router)

@@ -32,13 +32,8 @@ export default function ConstantTable() {
 
   const columns = createColumnDef(columnDefData);
   return (
-    <div className="p-5 w-full space-y-8">
-      <TableHeaderSection
-        tableName={tableInfo?.tableName}
-        schemaName={tableInfo?.schemaName}
-        dbName={tableInfo?.dbName}
-        tableComment={tableInfo?.description}
-      />
+    <div className="p-4 w-full space-y-8">
+      <TableHeaderSection tableName={tableInfo?.tableName} schemaName={tableInfo?.schemaName} dbName={tableInfo?.dbName} />
       {(tableMetaLoading || tableDataLoading) && <TableSkeleton rows={8} cols={7} />}
       {tableMetaLoaded && tableDataLoaded && <DataTable data={tableData} columns={columns} />}
     </div>

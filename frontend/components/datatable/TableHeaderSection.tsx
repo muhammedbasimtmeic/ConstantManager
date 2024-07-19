@@ -1,26 +1,19 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Input } from "../ui/input";
 import { useState } from "react";
-import { Button } from "../ui/button";
 import React from "react";
 import { Edit, Ellipsis } from "lucide-react";
 import Link from "next/link";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import TableComments from "./TableComments";
 
 interface TableHeaderSectionProps {
   tableName: string | undefined;
   schemaName: string | undefined;
   dbName: string | undefined;
-  tableComment?: string;
 }
-const TableHeaderSection = ({ tableName, schemaName, dbName, tableComment }: TableHeaderSectionProps) => {
-  const [comment, setComment] = useState(tableComment);
-  const [isEdited, setIsEdited] = useState(false);
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-  };
 
+const TableHeaderSection = ({ tableName, schemaName, dbName }: TableHeaderSectionProps) => {
   return (
-    <div className="w-full flex flex-col space-y-2">
+    <div className="w-1/2 flex flex-col space-y-2">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -51,27 +44,7 @@ const TableHeaderSection = ({ tableName, schemaName, dbName, tableComment }: Tab
       <h1 className="font-semibold text-2xl bg-gradient-to-r from-blue-700 via-indigo-600 to-indigo-500 inline-block text-transparent bg-clip-text w-fit p-1">
         {tableName ? tableName : "Loading..."}
       </h1>
-      <div className="flex gap-2 relative">
-        <Input
-          className="border border-zinc-300 bg-zinc-200/70 text-zinc-500  focus-visible:ring-0 focus-visible:ring-offset-0 w-96 px-8"
-          value={comment}
-          placeholder="Table Comment"
-          onChange={(e) => {
-            setComment(e.target.value);
-            if (e.target.value == tableComment) {
-              setIsEdited(false);
-            } else {
-              setIsEdited(true);
-            }
-          }}
-        />
-        <Edit className="w-4 h-4 absolute top-1/2 -translate-y-1/2 left-2 text-zinc-600" />
-        {isEdited && (
-          <Button type="submit" onClick={(e) => handleSubmit(e)}>
-            Update
-          </Button>
-        )}
-      </div>
+      <TableComments tableName={tableName} schemaName={schemaName} dbName={dbName} />
     </div>
   );
 };

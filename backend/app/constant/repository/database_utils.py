@@ -9,7 +9,7 @@ def get_db_list(db:Session):
 
 
 def get_database_list(db:Session):
-    return db.query(models.Databases).all()
+    return db.query(models.DatabasesConfig).all()
 
 
 def get_schema_list(db:Session):

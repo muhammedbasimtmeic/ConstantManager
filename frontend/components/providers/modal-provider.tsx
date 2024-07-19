@@ -1,13 +1,14 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import UserProfileModal from "../user/UserProfileModal";
-import AddSidebarGroup from "../sidebar/AddSidebarGroupModal";
-import DeleteSidebarGroupModal from "../sidebar/deleteSidebarGroupModal";
-import DeleteSidebarTableModal from "../sidebar/deleteSidebarTableModal";
-import EditSidebarGroup from "../sidebar/EditSidebarGroupModal";
-import UnGroupSidebarTableModal from "../sidebar/UngroupSidebarTableModal";
-import AddSidebarTableModal from "../sidebar/AddSidebarTableModal";
+import dynamic from "next/dynamic";
+
+const UserProfileModal = dynamic(() => import("../user/UserProfileModal"));
+const AddSidebarGroup = dynamic(() => import("../sidebar/AddSidebarGroupModal"));
+const DeleteSidebarGroupModal = dynamic(() => import("../sidebar/deleteSidebarGroupModal"));
+const DeleteSidebarTableModal = dynamic(() => import("../sidebar/deleteSidebarTableModal"));
+const EditSidebarGroup = dynamic(() => import("../sidebar/EditSidebarGroupModal"));
+const UnGroupSidebarTableModal = dynamic(() => import("../sidebar/UngroupSidebarTableModal"));
+const AddSidebarTableModal = dynamic(() => import("../sidebar/AddSidebarTableModal"));
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
